@@ -436,3 +436,56 @@ body {
 
 /* Chat */
 .chat-bubble {
+
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.chat-bubble.user {
+  background: var(--gradient-primary);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble.ai {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-bottom-left-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    z-index: 50;
+  }
+  .sidebar.open { left: 0; }
+}
+
+/* Mermaid Premium Design */
+.mermaid-container {
+  background: linear-gradient(145deg, #12122a, #0d0d20);
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  margin-top: 1rem;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto !important;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.mermaid-container svg .node rect, 
+.mermaid-container svg .node circle, 
+.mermaid-container svg .node polygon, 
+.mermaid-container svg .node path {
+  fill: #1a1a3e !important;
+  stroke: #6c5ce7 !important;
