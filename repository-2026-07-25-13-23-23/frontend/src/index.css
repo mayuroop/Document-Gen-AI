@@ -326,3 +326,55 @@ body {
 }
 
 .status-pending { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+
+.status-cloning { background: rgba(33, 150, 243, 0.15); color: #2196f3; }
+.status-processing { background: rgba(108, 92, 231, 0.15); color: #6c5ce7; }
+.status-generating { background: rgba(156, 39, 176, 0.15); color: #9c27b0; }
+.status-completed { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
+.status-failed { background: rgba(244, 67, 54, 0.15); color: #f44336; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(108, 92, 231, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(108, 92, 231, 0.3); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in { animation: fadeIn 0.5s ease forwards; }
+.animate-slide-in { animation: slideInRight 0.4s ease forwards; }
+.animate-pulse-glow { animation: pulse-glow 3s ease infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+/* Mermaid Diagram Container */
+.mermaid-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
