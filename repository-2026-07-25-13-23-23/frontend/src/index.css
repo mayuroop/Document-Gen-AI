@@ -489,3 +489,50 @@ body {
 .mermaid-container svg .node path {
   fill: #1a1a3e !important;
   stroke: #6c5ce7 !important;
+
+  stroke-width: 1.5px !important;
+}
+
+.mermaid-container svg .nodeLabel {
+  color: #e8e8f0 !important;
+  font-weight: 500;
+}
+
+.mermaid-container svg .edgePath .path {
+  stroke: #a78bfa !important;
+  stroke-width: 2px !important;
+}
+
+.mermaid-container svg .edgeLabel {
+  background-color: #1a1a3e !important;
+  color: #a78bfa !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+}
+
+.mermaid-container svg .cluster rect {
+  fill: rgba(108, 92, 231, 0.03) !important;
+  stroke: rgba(108, 92, 231, 0.3) !important;
+  stroke-dasharray: 4 !important;
+}
+
+.mermaid-container svg .cluster-label {
+  fill: #8b5cf6 !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px;
+}
+
+/* Sequence Diagram specific overrides */
+.mermaid-container svg .actor {
+  fill: #1a1a3e !important;
+  stroke: #6c5ce7 !important;
+  stroke-width: 1.5px !important;
+}
+.mermaid-container svg text.actor > tspan {
+  fill: #e8e8f0 !important;
+  font-weight: 500 !important;
+}
+.mermaid-container svg .messageLine0,
+.mermaid-container svg .messageLine1 {
+  stroke: #a78bfa !important;
