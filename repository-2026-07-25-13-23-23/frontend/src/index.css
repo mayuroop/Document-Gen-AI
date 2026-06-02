@@ -536,3 +536,53 @@ body {
 .mermaid-container svg .messageLine0,
 .mermaid-container svg .messageLine1 {
   stroke: #a78bfa !important;
+
+  stroke-width: 2px !important;
+}
+.mermaid-container svg #arrowhead path {
+  fill: #a78bfa !important;
+  stroke: #a78bfa !important;
+}
+.mermaid-container svg .sequenceNumber {
+  fill: white !important;
+}
+.mermaid-container svg .messageText {
+  fill: #e8e8f0 !important;
+}
+.mermaid-container svg .note {
+  fill: rgba(108, 92, 231, 0.15) !important;
+  stroke: #6c5ce7 !important;
+}
+.mermaid-container svg .noteText > tspan {
+  fill: #e8e8f0 !important;
+}
+
+/* ER Diagram specific overrides */
+.mermaid-container svg .er.entityBox {
+  fill: #1a1a3e !important;
+  stroke: #6c5ce7 !important;
+  stroke-width: 1.5px !important;
+}
+.mermaid-container svg .er.attributeBoxEven {
+  fill: rgba(26, 26, 62, 0.5) !important;
+  stroke: #4c38b8 !important;
+}
+.mermaid-container svg .er.attributeBoxOdd {
+  fill: rgba(26, 26, 62, 0.2) !important;
+  stroke: #4c38b8 !important;
+}
+.mermaid-container svg .er.entityLabel,
+.mermaid-container svg .er.entityLabel tspan {
+  fill: #e8e8f0 !important;
+  font-weight: 600 !important;
+}
+.mermaid-container svg .er.relationshipLine {
+  stroke: #a78bfa !important;
+  stroke-width: 2px !important;
+}
+.mermaid-container svg .er.relationshipLabelBox {
+  fill: #1a1a3e !important;
+  stroke: #6c5ce7 !important;
+}
+.mermaid-container svg .er.relationshipLabel tspan {
+  fill: #a78bfa !important;
