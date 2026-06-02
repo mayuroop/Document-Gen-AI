@@ -378,3 +378,61 @@ body {
   max-width: 100%;
   height: auto;
 }
+
+
+/* Tab System */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 4px;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 10px 20px;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: #6c5ce7; border-bottom-color: #6c5ce7; }
+
+/* File Tree */
+.file-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.file-tree-item:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top-color: #6c5ce7;
+  border-radius: 50%;
+  animation: spin-slow 0.8s linear infinite;
+}
+
+/* Chat */
+.chat-bubble {
