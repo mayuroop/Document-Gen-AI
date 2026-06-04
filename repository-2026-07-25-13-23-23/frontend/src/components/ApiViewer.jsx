@@ -153,3 +153,50 @@ export default function ApiViewer({ endpoints, projectId }) {
                   maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
                 }}>
+
+                  {endpoint.description || ''}
+                </span>
+              </div>
+
+              {expanded && (
+                <div style={{
+                  padding: '16px 20px',
+                  borderTop: '1px solid var(--border-color)',
+                  background: 'var(--bg-primary)',
+                }}>
+                  <div style={{ display: 'grid', gap: 12 }}>
+                    <div>
+                      <span style={{
+                        fontSize: '0.75rem', fontWeight: 600,
+                        color: 'var(--text-muted)', textTransform: 'uppercase',
+                      }}>Description</span>
+                      <p style={{ fontSize: '0.9rem', marginTop: 4 }}>
+                        {endpoint.description || 'No description available'}
+                      </p>
+                    </div>
+
+                    {endpoint.source_file && (
+                      <div>
+                        <span style={{
+                          fontSize: '0.75rem', fontWeight: 600,
+                          color: 'var(--text-muted)', textTransform: 'uppercase',
+                        }}>Source File</span>
+                        <p style={{
+                          fontSize: '0.85rem', marginTop: 4,
+                          fontFamily: "'JetBrains Mono', monospace",
+                          color: '#6c5ce7',
+                        }}>
+                          {endpoint.source_file}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
