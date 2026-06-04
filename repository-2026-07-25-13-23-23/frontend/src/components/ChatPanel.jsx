@@ -58,3 +58,60 @@ export default function ChatPanel({ projectId, onClose }) {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '12px 16px', borderBottom: '1px solid var(--border-color)',
       }}>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Bot size={18} style={{ color: '#6c5ce7' }} />
+          <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>AI Chat</span>
+        </div>
+        <button onClick={onClose} style={{
+          background: 'none', border: 'none', color: 'var(--text-muted)',
+          cursor: 'pointer', padding: 4,
+        }}>
+          <X size={18} />
+        </button>
+      </div>
+
+      {/* Messages */}
+      <div style={{
+        flex: 1, overflow: 'auto', padding: 16,
+        display: 'flex', flexDirection: 'column', gap: 12,
+      }}>
+        {messages.map((msg, i) => (
+          <div key={i} style={{
+            display: 'flex', flexDirection: 'column',
+            alignItems: msg.role === 'user' ? 'flex-end' : 'flex-start',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4,
+              fontSize: '0.75rem', color: 'var(--text-muted)',
+            }}>
+              {msg.role === 'user' ? <User size={12} /> : <Bot size={12} />}
+              {msg.role === 'user' ? 'You' : 'AI Assistant'}
+            </div>
+            <div className={`chat-bubble ${msg.role === 'user' ? 'user' : 'ai'}`}>
+              {msg.role === 'ai' ? (
+                <div className="markdown-body" style={{ fontSize: '0.85rem' }}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                msg.content
+              )}
+            </div>
+          </div>
+        ))}
+
+        {loading && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-muted)' }}>
+            <div className="spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
+            <span style={{ fontSize: '0.8rem' }}>Thinking...</span>
+          </div>
+        )}
+        <div ref={messagesEnd} />
+      </div>
+
+      {/* Input */}
+      <div style={{
+        padding: '12px 16px', borderTop: '1px solid var(--border-color)',
+        display: 'flex', gap: 8,
