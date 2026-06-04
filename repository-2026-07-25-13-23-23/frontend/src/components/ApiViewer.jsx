@@ -96,3 +96,60 @@ export default function ApiViewer({ endpoints, projectId }) {
           🔌 API Endpoints
         </h1>
         <button 
+
+          className="btn-primary" 
+          onClick={handleGenerate} 
+          disabled={generating || generateSuccess || describedEndpoints === totalEndpoints}
+          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', fontSize: '0.85rem' }}
+        >
+          {generating ? (
+            <><div className="spinner" style={{ width: 14, height: 14, borderWidth: 2 }} /> Generating... ({describedEndpoints}/{totalEndpoints})</>
+          ) : generateSuccess || describedEndpoints === totalEndpoints ? (
+            <>✅ All Generated</>
+          ) : (
+            <><Send size={14} /> Generate Missing Descriptions ({totalEndpoints - describedEndpoints})</>
+          )}
+        </button>
+      </div>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: '0.9rem' }}>
+        {totalEndpoints} endpoint{totalEndpoints !== 1 ? 's' : ''} discovered from the codebase
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {localEndpoints.map((endpoint, i) => {
+          const method = (endpoint.method || 'GET').toUpperCase();
+          const expanded = expandedIdx === i;
+
+          return (
+            <div key={i} className="glass-card" style={{
+              padding: 0, overflow: 'hidden',
+              cursor: 'pointer',
+            }}>
+              <div
+                onClick={() => setExpandedIdx(expanded ? null : i)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  padding: '14px 20px',
+                }}
+              >
+                {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+
+                <span style={{
+                  background: METHOD_COLORS[method] || '#999',
+                  color: 'white', padding: '3px 10px', borderRadius: 6,
+                  fontSize: '0.75rem', fontWeight: 700,
+                  minWidth: 55, textAlign: 'center',
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}>{method}</span>
+
+                <code style={{
+                  flex: 1, fontSize: '0.9rem',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  color: 'var(--text-primary)',
+                }}>{endpoint.path || '/unknown'}</code>
+
+                <span style={{
+                  fontSize: '0.8rem', color: 'var(--text-muted)',
+                  maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
