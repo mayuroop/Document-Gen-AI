@@ -50,3 +50,49 @@ export default function ApiViewer({ endpoints, projectId }) {
       }, 2000); // poll every 2s
     }
     return () => clearInterval(intervalId);
+
+  }, [generating, projectId]);
+
+  const handleGenerate = async () => {
+    if (!projectId) return;
+    setGenerating(true);
+    setGenerateSuccess(false);
+    try {
+      await generateApiDescriptions(projectId);
+      // Polling effect will take over
+    } catch (err) {
+      console.error('Failed to trigger description generation', err);
+      setGenerating(false);
+    }
+  };
+
+  if (!localEndpoints || localEndpoints.length === 0) {
+    return (
+      <div className="animate-fade-in">
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: 16 }}>
+          🔌 API Endpoints
+        </h1>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          height: 200, color: 'var(--text-muted)', flexDirection: 'column', gap: 8,
+        }}>
+          <p>No API endpoints discovered.</p>
+          <p style={{ fontSize: '0.8rem' }}>APIs are detected from route definitions in the codebase.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Count progress
+  const totalEndpoints = localEndpoints.length;
+  const describedEndpoints = localEndpoints.filter(e => 
+    e.description && e.description !== "No description" && e.description.toLowerCase() !== "unknown"
+  ).length;
+
+  return (
+    <div className="animate-fade-in">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 700 }}>
+          🔌 API Endpoints
+        </h1>
+        <button 
