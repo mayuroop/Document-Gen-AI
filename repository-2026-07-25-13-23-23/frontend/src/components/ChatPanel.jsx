@@ -115,3 +115,30 @@ export default function ChatPanel({ projectId, onClose }) {
       <div style={{
         padding: '12px 16px', borderTop: '1px solid var(--border-color)',
         display: 'flex', gap: 8,
+
+      }}>
+        <input
+          className="input-field"
+          placeholder="Ask about this project..."
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          style={{ padding: '10px 14px', fontSize: '0.85rem' }}
+        />
+        <button
+          onClick={handleSend}
+          disabled={loading || !input.trim()}
+          style={{
+            background: 'var(--gradient-primary)', border: 'none',
+            color: 'white', width: 40, height: 40, borderRadius: 10,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', opacity: loading || !input.trim() ? 0.5 : 1,
+            flexShrink: 0,
+          }}
+        >
+          <Send size={16} />
+        </button>
+      </div>
+    </div>
+  );
+}
