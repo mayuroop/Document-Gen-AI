@@ -211,3 +211,50 @@ function MermaidChart({ code, id }) {
 
 export default function DiagramViewer({ diagrams, activeDiagram = null }) {
   const [activeTab, setActiveTab] = useState(0);
+
+
+  useEffect(() => {
+    if (activeDiagram && diagrams) {
+      const idx = diagrams.findIndex(d =>
+        d.type === activeDiagram || d.title?.toLowerCase().includes(activeDiagram)
+      );
+      if (idx >= 0) setActiveTab(idx);
+    }
+  }, [activeDiagram, diagrams]);
+
+  if (!diagrams || diagrams.length === 0) {
+    return (
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        height: 300, color: 'var(--text-muted)',
+      }}>
+        No diagrams generated yet.
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-fade-in">
+      <h1 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: 24 }}>
+        📊 Project Diagrams
+      </h1>
+
+      {/* Tabs */}
+      <div className="tabs" style={{ marginBottom: 24 }}>
+        {diagrams.map((diagram, i) => (
+          <button
+            key={i}
+            className={`tab ${activeTab === i ? 'active' : ''}`}
+            onClick={() => setActiveTab(i)}
+          >
+            {diagram.title || `Diagram ${i + 1}`}
+          </button>
+        ))}
+      </div>
+
+      {/* Active Diagram — wrapped in error boundary */}
+      {diagrams[activeTab] && (
+        <DiagramErrorBoundary
+          key={`err-${activeTab}`}
+          code={diagrams[activeTab].mermaid_code}
+        >
