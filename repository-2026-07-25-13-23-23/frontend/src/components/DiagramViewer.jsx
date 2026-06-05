@@ -96,3 +96,61 @@ function MermaidChart({ code, id }) {
   useEffect(() => {
     initMermaid();
 
+
+    if (!sanitized) {
+      setError('No diagram code provided.');
+      return;
+    }
+
+    setRendered(false);
+    setError(null);
+    setSvgContent('');
+
+    let cancelled = false;
+
+    const render = async () => {
+      try {
+        const uniqueId = `mermaid-${id}-${Date.now()}`;
+        const { svg } = await mermaid.render(uniqueId, sanitized);
+        if (!cancelled) {
+          setSvgContent(svg);
+          setRendered(true);
+          setError(null);
+        }
+      } catch (err) {
+        console.warn('Mermaid render error:', err?.message || err);
+        if (!cancelled) {
+          setError('Diagram has syntax issues. Showing raw code below.');
+          setRendered(false);
+        }
+        // Clean up any error elements mermaid may have left in the DOM
+        const errorEl = document.getElementById(`d${id}`);
+        if (errorEl) errorEl.remove();
+      }
+    };
+
+    render();
+
+    return () => { cancelled = true; };
+  }, [sanitized, id]);
+
+  // Use dangerouslySetInnerHTML in a separate step to avoid React DOM issues
+  useEffect(() => {
+    if (svgContent && containerRef.current) {
+      containerRef.current.innerHTML = svgContent;
+    }
+  }, [svgContent]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="mermaid-container" style={{
+      position: 'relative',
+      maxHeight: expanded ? 'none' : 600,
+      overflow: expanded ? 'visible' : 'auto',
+    }}>
+      <div style={{
