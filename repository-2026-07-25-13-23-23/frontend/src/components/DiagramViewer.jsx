@@ -154,3 +154,60 @@ function MermaidChart({ code, id }) {
       overflow: expanded ? 'visible' : 'auto',
     }}>
       <div style={{
+
+        position: 'absolute', top: 12, right: 12,
+        display: 'flex', gap: 6, zIndex: 5,
+      }}>
+        <button className="btn-secondary" onClick={handleCopy} style={{
+          padding: '4px 10px', fontSize: '0.75rem',
+          display: 'flex', alignItems: 'center', gap: 4,
+        }}>
+          {copied ? <><Check size={12} /> Copied</> : <><Copy size={12} /> Code</>}
+        </button>
+        <button className="btn-secondary" onClick={() => setExpanded(!expanded)} style={{
+          padding: '4px 8px',
+        }}>
+          {expanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+        </button>
+      </div>
+
+      {/* Rendered diagram */}
+      {!error && (
+        <div ref={containerRef} style={{
+          display: 'flex', justifyContent: 'center', minHeight: 100,
+        }}>
+          {!rendered && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              color: 'var(--text-muted)',
+            }}>
+              <div className="spinner" style={{ width: 20, height: 20, borderWidth: 2 }} />
+              Rendering diagram...
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Error fallback */}
+      {error && (
+        <div style={{ marginTop: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <AlertTriangle size={16} style={{ color: '#ff9800' }} />
+            <span style={{ color: '#ff9800', fontSize: '0.85rem' }}>{error}</span>
+          </div>
+          <pre style={{
+            background: '#0d1117', padding: 16, borderRadius: 8,
+            fontSize: '0.8rem', color: '#a78bfa', overflow: 'auto',
+            whiteSpace: 'pre-wrap', lineHeight: 1.5,
+          }}>
+            <code>{sanitized}</code>
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+export default function DiagramViewer({ diagrams, activeDiagram = null }) {
+  const [activeTab, setActiveTab] = useState(0);
