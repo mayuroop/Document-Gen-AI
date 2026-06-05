@@ -258,3 +258,14 @@ export default function DiagramViewer({ diagrams, activeDiagram = null }) {
           key={`err-${activeTab}`}
           code={diagrams[activeTab].mermaid_code}
         >
+
+          <MermaidChart
+            code={diagrams[activeTab].mermaid_code}
+            id={activeTab}
+            key={`diagram-${activeTab}-${Date.now()}`}
+          />
+        </DiagramErrorBoundary>
+      )}
+    </div>
+  );
+}
