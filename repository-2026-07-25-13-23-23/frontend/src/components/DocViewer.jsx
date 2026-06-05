@@ -52,3 +52,18 @@ export default function DocViewer({ content, sectionName }) {
             code({ node, inline, className, children, ...props }) {
               if (!inline && className) {
                 return <CodeBlock className={className}>{children}</CodeBlock>;
+
+              }
+              if (!inline) {
+                return <CodeBlock>{children}</CodeBlock>;
+              }
+              return <code className={className} {...props}>{children}</code>;
+            },
+          }}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
+    </div>
+  );
+}
