@@ -51,3 +51,49 @@ function TreeNode({ name, data, depth, analyses, onSelectFile }) {
       >
         {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
         <Folder size={14} style={{ color: '#6c5ce7', flexShrink: 0 }} />
+
+        <span>{name}</span>
+      </div>
+      {expanded && entries.map(([key, value]) => (
+        <TreeNode
+          key={key} name={key} data={value} depth={depth + 1}
+          analyses={analyses} onSelectFile={onSelectFile}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function FileExplorer({ fileTree, fileAnalyses }) {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const findAnalysis = (filename) => {
+    return fileAnalyses.find(a => a.path?.endsWith(filename));
+  };
+
+  const analysis = selectedFile ? findAnalysis(selectedFile) : null;
+
+  return (
+    <div className="animate-fade-in">
+      <h1 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: 8 }}>
+        📁 File Explorer
+      </h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: '0.9rem' }}>
+        Browse project files and their AI-generated analysis
+      </p>
+
+      <div style={{ display: 'flex', gap: 20 }}>
+        {/* File Tree */}
+        <div style={{
+          width: 320, minWidth: 320, background: 'var(--bg-card)',
+          border: '1px solid var(--border-color)', borderRadius: 12,
+          padding: '12px 0', maxHeight: 600, overflow: 'auto',
+        }}>
+          {Object.entries(fileTree).map(([key, value]) => (
+            <TreeNode
+              key={key} name={key} data={value} depth={0}
+              analyses={fileAnalyses}
+              onSelectFile={setSelectedFile}
+            />
+          ))}
+        </div>
