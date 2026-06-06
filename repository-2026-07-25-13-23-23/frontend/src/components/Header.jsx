@@ -45,3 +45,9 @@ export default function Header({ theme, toggleTheme, minimal = false }) {
           title="Toggle theme"
         >
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+
+        </button>
+      </div>
+    </header>
+  );
+}
