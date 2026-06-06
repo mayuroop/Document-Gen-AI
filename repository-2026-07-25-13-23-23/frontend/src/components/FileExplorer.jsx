@@ -97,3 +97,60 @@ export default function FileExplorer({ fileTree, fileAnalyses }) {
             />
           ))}
         </div>
+
+
+        {/* Analysis Panel */}
+        <div style={{ flex: 1 }}>
+          {analysis ? (
+            <div className="glass-card" style={{ padding: 24 }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: 4 }}>
+                {analysis.path}
+              </h3>
+              <span style={{
+                fontSize: '0.8rem', color: '#6c5ce7',
+                background: 'rgba(108, 92, 231, 0.12)',
+                padding: '2px 8px', borderRadius: 4,
+              }}>
+                {analysis.language}
+              </span>
+
+              <div style={{ marginTop: 20 }}>
+                <h4 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: 8, color: 'var(--text-secondary)' }}>
+                  Summary
+                </h4>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.6 }}>
+                  {analysis.summary || 'No summary available'}
+                </p>
+              </div>
+
+              {analysis.functions?.length > 0 && (
+                <div style={{ marginTop: 16 }}>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: 8, color: 'var(--text-secondary)' }}>
+                    Functions ({analysis.functions.length})
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {analysis.functions.map((fn, i) => (
+                      <code key={i} style={{
+                        fontSize: '0.8rem', padding: '3px 10px',
+                        background: 'rgba(108, 92, 231, 0.08)',
+                        borderRadius: 6, color: '#a78bfa',
+                        fontFamily: "'JetBrains Mono', monospace",
+                      }}>{fn}</code>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {analysis.classes?.length > 0 && (
+                <div style={{ marginTop: 16 }}>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: 8, color: 'var(--text-secondary)' }}>
+                    Classes ({analysis.classes.length})
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {analysis.classes.map((cls, i) => (
+                      <code key={i} style={{
+                        fontSize: '0.8rem', padding: '3px 10px',
+                        background: 'rgba(76, 175, 80, 0.08)',
+                        borderRadius: 6, color: '#4caf50',
+                        fontFamily: "'JetBrains Mono', monospace",
+                      }}>{cls}</code>
