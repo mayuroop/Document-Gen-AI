@@ -154,3 +154,34 @@ export default function FileExplorer({ fileTree, fileAnalyses }) {
                         borderRadius: 6, color: '#4caf50',
                         fontFamily: "'JetBrains Mono', monospace",
                       }}>{cls}</code>
+
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {analysis.key_logic && (
+                <div style={{ marginTop: 16 }}>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: 8, color: 'var(--text-secondary)' }}>
+                    Key Logic
+                  </h4>
+                  <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+                    {analysis.key_logic}
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              height: 300, color: 'var(--text-muted)', flexDirection: 'column', gap: 8,
+            }}>
+              <Code2 size={32} />
+              <p>Select a file to view its analysis</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
