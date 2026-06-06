@@ -91,3 +91,55 @@ export default function SearchModal({ projectId, onClose, onNavigate }) {
               padding: 24, gap: 8, color: 'var(--text-muted)',
             }}>
               <div className="spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
+
+              Searching...
+            </div>
+          )}
+
+          {!loading && query.length >= 2 && results.length === 0 && (
+            <div style={{
+              textAlign: 'center', padding: 32, color: 'var(--text-muted)',
+            }}>
+              No results found for "{query}"
+            </div>
+          )}
+
+          {results.map((result, i) => (
+            <div
+              key={i}
+              style={{
+                padding: '12px 20px', cursor: 'pointer',
+                borderBottom: '1px solid var(--border-color)',
+                transition: 'background 0.15s',
+              }}
+              onClick={() => {
+                if (result.type === 'documentation') {
+                  onNavigate(result.section);
+                }
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-card-hover)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                {result.type === 'documentation' ? (
+                  <FileText size={14} style={{ color: '#6c5ce7' }} />
+                ) : (
+                  <Code2 size={14} style={{ color: '#4caf50' }} />
+                )}
+                <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                  {result.section?.replace(/_/g, ' ').toUpperCase()}
+                </span>
+                <span style={{
+                  fontSize: '0.7rem', color: 'var(--text-muted)',
+                  background: 'var(--bg-primary)', padding: '1px 6px', borderRadius: 4,
+                }}>
+                  {result.match_count} match{result.match_count !== 1 ? 'es' : ''}
+                </span>
+              </div>
+              <p style={{
+                fontSize: '0.8rem', color: 'var(--text-secondary)',
+                overflow: 'hidden', textOverflow: 'ellipsis',
+                display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+              }}>
+                {result.snippet}
+              </p>
