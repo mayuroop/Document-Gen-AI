@@ -143,3 +143,20 @@ export default function SearchModal({ projectId, onClose, onNavigate }) {
               }}>
                 {result.snippet}
               </p>
+
+            </div>
+          ))}
+
+          {query.length < 2 && (
+            <div style={{
+              textAlign: 'center', padding: 32, color: 'var(--text-muted)',
+              fontSize: '0.85rem',
+            }}>
+              Type at least 2 characters to search
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
