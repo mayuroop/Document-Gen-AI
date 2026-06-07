@@ -48,3 +48,60 @@ export default function DashboardPage({ theme, toggleTheme }) {
     setCreating(true);
     try {
       const project = await createProject(repoUrl.trim());
+
+      toast.success('Project created!');
+      setShowModal(false);
+      setRepoUrl('');
+      navigate(`/project/${project.id}`);
+    } catch (err) {
+      toast.error(err.response?.data?.detail || 'Failed to create project');
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    if (!confirm('Delete this project?')) return;
+    try {
+      await deleteProject(id);
+      toast.success('Project deleted');
+      fetchProjects();
+    } catch (err) {
+      toast.error('Failed to delete project');
+    }
+  };
+
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
+  };
+
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <Header theme={theme} toggleTheme={toggleTheme} minimal />
+
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 24px' }}>
+        {/* Header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          marginBottom: 32,
+        }}>
+          <div>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 700 }}>Projects</h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: 4 }}>
+              {projects.length} project{projects.length !== 1 ? 's' : ''} generated
+            </p>
+          </div>
+          <button
+            id="new-project-btn"
+            className="btn-primary"
+            onClick={() => setShowModal(true)}
+            style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+          >
+            <Plus size={18} /> New Project
+          </button>
+        </div>
