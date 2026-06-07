@@ -103,3 +103,51 @@ export default function Sidebar({
           {docsExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           <p style={{
             fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px',
+
+            color: 'var(--text-muted)', fontWeight: 600,
+          }}>Documentation</p>
+        </div>
+
+        {docsExpanded && sections.map(section => (
+          <div
+            key={section.key}
+            className={`sidebar-item ${activeView === 'docs' && activeSection === section.key ? 'active' : ''}`}
+            onClick={() => setActiveSection(section.key)}
+          >
+            <span style={{ fontSize: '14px' }}>{section.icon}</span>
+            <span>{section.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Diagrams Section */}
+      <div style={{ padding: '12px 0', borderBottom: '1px solid var(--border-color)' }}>
+        <div
+          style={{
+            display: 'flex', alignItems: 'center', gap: 6, padding: '0 16px',
+            cursor: 'pointer', marginBottom: 8,
+          }}
+          onClick={() => setDiagramsExpanded(!diagramsExpanded)}
+        >
+          {diagramsExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          <p style={{
+            fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px',
+            color: 'var(--text-muted)', fontWeight: 600,
+          }}>Diagrams</p>
+        </div>
+
+        {diagramsExpanded && DIAGRAM_ITEMS.map(item => (
+          <div
+            key={item.key}
+            className={`sidebar-item ${activeView === 'diagrams' && activeDiagram === item.key ? 'active' : ''}`}
+            onClick={() => {
+              setActiveView('diagrams');
+              if (setActiveDiagram) setActiveDiagram(item.key);
+            }}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
