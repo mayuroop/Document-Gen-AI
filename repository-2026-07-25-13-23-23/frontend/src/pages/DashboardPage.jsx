@@ -105,3 +105,62 @@ export default function DashboardPage({ theme, toggleTheme }) {
             <Plus size={18} /> New Project
           </button>
         </div>
+
+
+        {/* Project Grid */}
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 60 }}>
+            <div className="spinner" />
+          </div>
+        ) : projects.length === 0 ? (
+          <div style={{
+            textAlign: 'center', padding: '80px 24px',
+          }}>
+            <FileText size={48} style={{ color: 'var(--text-muted)', marginBottom: 16 }} />
+            <h3 style={{ fontSize: '1.2rem', marginBottom: 8 }}>No projects yet</h3>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: 24 }}>
+              Create your first project by entering a GitHub URL.
+            </p>
+            <button className="btn-primary" onClick={() => setShowModal(true)}>
+              Create Project
+            </button>
+          </div>
+        ) : (
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+            gap: 16,
+          }}>
+            {projects.map((project, i) => (
+              <div
+                key={project.id}
+                className="glass-card animate-fade-in"
+                style={{
+                  padding: 24, cursor: 'pointer', animationDelay: `${i * 0.05}s`,
+                }}
+                onClick={() => navigate(`/project/${project.id}`)}
+              >
+                <div style={{
+                  display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
+                  marginBottom: 16,
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 10,
+                      background: 'rgba(108, 92, 231, 0.12)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <GitBranch size={18} style={{ color: '#6c5ce7' }} />
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>{project.repo_name}</h3>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{project.owner}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => handleDelete(project.id, e)}
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      color: 'var(--text-muted)', padding: 4,
+                    }}
+                    title="Delete project"
+                  >
