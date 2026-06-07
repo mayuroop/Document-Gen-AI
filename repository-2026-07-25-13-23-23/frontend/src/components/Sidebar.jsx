@@ -49,3 +49,57 @@ function FileTreeNode({ name, data, depth = 0 }) {
       </div>
       {expanded && entries.map(([key, value]) => (
         <FileTreeNode key={key} name={key} data={value} depth={depth + 1} />
+
+      ))}
+    </div>
+  );
+}
+
+export default function Sidebar({
+  sections, activeSection, setActiveSection,
+  activeView, setActiveView, fileTree,
+  activeDiagram, setActiveDiagram,
+}) {
+  const [docsExpanded, setDocsExpanded] = useState(true);
+  const [diagramsExpanded, setDiagramsExpanded] = useState(true);
+  const [filesExpanded, setFilesExpanded] = useState(false);
+
+  return (
+    <div style={{
+      width: 280,
+      minWidth: 280,
+      background: 'var(--bg-secondary)',
+      borderRight: '1px solid var(--border-color)',
+      overflowY: 'auto',
+      flexShrink: 0,
+    }}>
+      {/* View Tabs */}
+      <div style={{ padding: '12px 8px', borderBottom: '1px solid var(--border-color)' }}>
+        <p style={{
+          fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px',
+          color: 'var(--text-muted)', padding: '0 8px', marginBottom: 8, fontWeight: 600,
+        }}>Views</p>
+        {VIEW_ITEMS.map(item => (
+          <div
+            key={item.key}
+            className={`sidebar-item ${activeView === item.key ? 'active' : ''}`}
+            onClick={() => setActiveView(item.key)}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Documentation Sections */}
+      <div style={{ padding: '12px 0', borderBottom: '1px solid var(--border-color)' }}>
+        <div
+          style={{
+            display: 'flex', alignItems: 'center', gap: 6, padding: '0 16px',
+            cursor: 'pointer', marginBottom: 8,
+          }}
+          onClick={() => setDocsExpanded(!docsExpanded)}
+        >
+          {docsExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          <p style={{
+            fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px',
