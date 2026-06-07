@@ -151,3 +151,33 @@ export default function Sidebar({
         ))}
       </div>
 
+
+      {/* File Tree */}
+      {fileTree && Object.keys(fileTree).length > 0 && (
+        <div style={{ padding: '12px 0' }}>
+          <div
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '0 16px',
+              cursor: 'pointer', marginBottom: 8,
+            }}
+            onClick={() => setFilesExpanded(!filesExpanded)}
+          >
+            {filesExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+            <p style={{
+              fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px',
+              color: 'var(--text-muted)', fontWeight: 600,
+            }}>Project Files</p>
+          </div>
+
+          {filesExpanded && (
+            <div style={{ maxHeight: 300, overflow: 'auto' }}>
+              {Object.entries(fileTree).map(([key, value]) => (
+                <FileTreeNode key={key} name={key} data={value} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
