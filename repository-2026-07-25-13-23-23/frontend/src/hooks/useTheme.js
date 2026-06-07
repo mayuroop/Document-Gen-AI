@@ -45,3 +45,14 @@ export function usePolling(fetchFn, interval = 3000, enabled = true) {
     };
 
     poll();
+
+    timer = setInterval(poll, interval);
+
+    return () => {
+      mounted = false;
+      clearInterval(timer);
+    };
+  }, [fetchFn, interval, enabled]);
+
+  return { data, error, loading };
+}
