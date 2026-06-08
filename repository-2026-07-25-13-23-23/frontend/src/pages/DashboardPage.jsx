@@ -211,3 +211,54 @@ export default function DashboardPage({ theme, toggleTheme }) {
                   borderTop: '1px solid var(--border-color)', paddingTop: 12,
                 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+
+                    <Clock size={12} /> {formatDate(project.created_at)}
+                  </span>
+                  <span>{project.file_count} files</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Create Modal */}
+      {showModal && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 100, backdropFilter: 'blur(4px)',
+        }} onClick={() => setShowModal(false)}>
+          <div className="glass-card animate-fade-in" style={{
+            padding: 32, width: '100%', maxWidth: 500,
+          }} onClick={e => e.stopPropagation()}>
+            <h2 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 8 }}>
+              New Project
+            </h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: 24 }}>
+              Enter a GitHub repository URL to generate documentation.
+            </p>
+            <form onSubmit={handleCreate}>
+              <input
+                id="modal-repo-input"
+                className="input-field"
+                placeholder="https://github.com/owner/repo"
+                value={repoUrl}
+                onChange={e => setRepoUrl(e.target.value)}
+                autoFocus
+              />
+              <div style={{ display: 'flex', gap: 12, marginTop: 20, justifyContent: 'flex-end' }}>
+                <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary" disabled={creating}>
+                  {creating ? 'Creating...' : 'Generate Docs'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
