@@ -147,3 +147,59 @@ export default function LandingPage({ theme, toggleTheme }) {
                 background: 'rgba(108, 92, 231, 0.12)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 color: '#6c5ce7', marginBottom: 16,
+
+              }}>{f.icon}</div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: 8 }}>{f.title}</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Generated Docs Preview */}
+      <section style={{
+        padding: '60px 24px', maxWidth: 900, margin: '0 auto', textAlign: 'center',
+      }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: 16 }}>
+          14 Documentation Sections Generated
+        </h2>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: '0.95rem' }}>
+          Each project gets a complete documentation suite
+        </p>
+
+        <div style={{
+          display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center',
+        }}>
+          {['README', 'ARCHITECTURE', 'API_DOCS', 'DATABASE', 'SETUP', 'DEPLOYMENT',
+            'TROUBLESHOOTING', 'CHANGELOG', 'SECURITY', 'PERFORMANCE', 'SCALABILITY',
+            'TESTING', 'ROADMAP', 'LICENSE'].map(name => (
+            <span key={name} style={{
+              padding: '6px 14px', background: 'var(--bg-card)',
+              border: '1px solid var(--border-color)', borderRadius: 8,
+              fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-secondary)',
+              fontFamily: "'JetBrains Mono', monospace",
+            }}>{name}.md</span>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{
+        padding: '60px 24px', textAlign: 'center',
+      }}>
+        <div className="glass-card" style={{
+          maxWidth: 700, margin: '0 auto', padding: '48px 40px',
+          background: 'linear-gradient(135deg, rgba(108,92,231,0.08) 0%, rgba(168,230,207,0.05) 100%)',
+        }}>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: 12 }}>
+            Ready to Document Your Project?
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: 28 }}>
+            Start generating professional documentation in seconds.
+          </p>
+          <a href="#repo-url-input" className="btn-primary" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+          }}>
+            Get Started <ArrowRight size={18} />
+          </a>
+        </div>
