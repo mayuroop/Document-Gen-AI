@@ -102,3 +102,59 @@ export default function ProjectPage({ theme, toggleTheme }) {
     }
     const blob = new Blob([combined], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${project?.repo_name || 'docs'}_documentation.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Markdown exported!');
+  };
+
+  const [exportingPdf, setExportingPdf] = useState(false);
+
+  const handleExportPdf = async () => {
+    if (!docs) return;
+    setExportingPdf(true);
+    const toastId = toast.loading('Generating PDF... This may take a moment.');
+    try {
+      await exportToPdf(
+        project?.repo_name || 'Project',
+        docs.documentation || {},
+        docs.diagrams || []
+      );
+      toast.success('PDF exported successfully!', { id: toastId });
+    } catch (err) {
+      console.error('PDF export error:', err);
+      toast.error('PDF export failed. Try again.', { id: toastId });
+    } finally {
+      setExportingPdf(false);
+    }
+  };
+
+  // Keyboard shortcut for search
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setShowSearch(true);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh' }}>
+        <Header theme={theme} toggleTheme={toggleTheme} minimal />
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          height: 'calc(100vh - 60px)', flexDirection: 'column', gap: 16,
+        }}>
+          <div className="spinner" />
+          <p style={{ color: 'var(--text-secondary)' }}>Loading project...</p>
+        </div>
+      </div>
+    );
+  }
