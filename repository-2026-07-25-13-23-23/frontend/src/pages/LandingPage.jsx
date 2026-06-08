@@ -101,3 +101,49 @@ export default function LandingPage({ theme, toggleTheme }) {
               value={repoUrl}
               onChange={e => setRepoUrl(e.target.value)}
               style={{ paddingLeft: 44 }}
+
+            />
+          </div>
+          <button
+            id="generate-btn"
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              minWidth: 160, justifyContent: 'center',
+              opacity: loading ? 0.7 : 1,
+            }}
+          >
+            {loading ? (
+              <><div className="spinner" style={{ width: 18, height: 18, borderWidth: 2 }} /> Generating...</>
+            ) : (
+              <><Zap size={18} /> Generate</>
+            )}
+          </button>
+        </form>
+
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 12 }}>
+          Works with any public GitHub repository
+        </p>
+      </section>
+
+      {/* Features Grid */}
+      <section style={{ padding: '40px 24px 80px', maxWidth: 1100, margin: '0 auto' }}>
+        <h2 style={{ textAlign: 'center', fontSize: '1.8rem', fontWeight: 700, marginBottom: 48 }}>
+          Everything You Need for <span className="gradient-text">Perfect Documentation</span>
+        </h2>
+
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 20,
+        }}>
+          {FEATURES.map((f, i) => (
+            <div key={i} className="glass-card animate-fade-in" style={{
+              padding: 28, animationDelay: `${i * 0.1}s`,
+            }}>
+              <div style={{
+                width: 48, height: 48, borderRadius: 12,
+                background: 'rgba(108, 92, 231, 0.12)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#6c5ce7', marginBottom: 16,
