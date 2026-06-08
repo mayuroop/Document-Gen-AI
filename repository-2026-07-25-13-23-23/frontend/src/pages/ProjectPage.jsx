@@ -56,3 +56,49 @@ export default function ProjectPage({ theme, toggleTheme }) {
     } catch (err) {
       console.error('Failed to load project:', err);
     } finally {
+
+      setLoading(false);
+    }
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchData();
+    // Poll if not completed
+    const interval = setInterval(async () => {
+      try {
+        const proj = await getProject(projectId);
+        setProject(proj);
+        if (proj.status === 'completed' && !docs) {
+          const docData = await getDocumentation(projectId);
+          setDocs(docData);
+          clearInterval(interval);
+        }
+        if (proj.status === 'failed') {
+          clearInterval(interval);
+        }
+      } catch (err) {}
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [projectId, fetchData]);
+
+  const handleRegenerate = async () => {
+    try {
+      await regenerateProject(projectId);
+      toast.success('Regeneration started');
+      setDocs(null);
+      fetchData();
+    } catch (err) {
+      toast.error('Failed to regenerate');
+    }
+  };
+
+  const handleExportMd = () => {
+    if (!docs) return;
+    const documentation = docs.documentation || {};
+    let combined = '';
+    for (const [key, content] of Object.entries(documentation)) {
+      combined += `# ${key.toUpperCase().replace('_', ' ')}\n\n${content}\n\n---\n\n`;
+    }
+    const blob = new Blob([combined], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
