@@ -203,3 +203,17 @@ export default function LandingPage({ theme, toggleTheme }) {
             Get Started <ArrowRight size={18} />
           </a>
         </div>
+
+      </section>
+
+      {/* Footer */}
+      <footer style={{
+        padding: '24px', textAlign: 'center',
+        borderTop: '1px solid var(--border-color)',
+        color: 'var(--text-muted)', fontSize: '0.8rem',
+      }}>
+        Built with ❤️ using FastAPI, React & Ollama AI
+      </footer>
+    </div>
+  );
+}
