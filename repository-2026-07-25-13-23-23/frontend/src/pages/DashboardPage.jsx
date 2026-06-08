@@ -164,3 +164,50 @@ export default function DashboardPage({ theme, toggleTheme }) {
                     }}
                     title="Delete project"
                   >
+
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+
+                {/* Status */}
+                <div style={{ marginBottom: 12 }}>
+                  <span className={`status-badge status-${project.status}`}>
+                    <span style={{
+                      width: 6, height: 6, borderRadius: '50%',
+                      background: STATUS_COLORS[project.status] || '#999',
+                      display: 'inline-block',
+                    }} />
+                    {project.status}
+                  </span>
+                </div>
+
+                {/* Progress */}
+                {project.status !== 'completed' && project.status !== 'failed' && (
+                  <div style={{ marginBottom: 12 }}>
+                    <div className="progress-bar">
+                      <div className="progress-bar-fill" style={{ width: `${project.progress}%` }} />
+                    </div>
+                    <p style={{
+                      fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: 4,
+                    }}>{project.progress}% complete</p>
+                  </div>
+                )}
+
+                {/* Error */}
+                {project.error && (
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    color: '#f44336', fontSize: '0.8rem', marginBottom: 8,
+                  }}>
+                    <AlertCircle size={14} />
+                    <span>{project.error.slice(0, 60)}...</span>
+                  </div>
+                )}
+
+                {/* Meta */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 8,
+                  borderTop: '1px solid var(--border-color)', paddingTop: 12,
+                }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
