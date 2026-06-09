@@ -158,3 +158,53 @@ export default function ProjectPage({ theme, toggleTheme }) {
       </div>
     );
   }
+
+
+  // Processing state
+  if (project && project.status !== 'completed' && project.status !== 'failed') {
+    return (
+      <div style={{ minHeight: '100vh' }}>
+        <Header theme={theme} toggleTheme={toggleTheme} minimal />
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          height: 'calc(100vh - 60px)', flexDirection: 'column', gap: 20,
+          padding: 24,
+        }}>
+          <div className="spinner" style={{ width: 56, height: 56, borderWidth: 4 }} />
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 600 }}>
+            Generating Documentation
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', maxWidth: 400 }}>
+            Analyzing <strong>{project.repo_name}</strong> repository...
+            <br />This may take a few minutes depending on the repo size.
+          </p>
+
+          <div style={{ width: '100%', maxWidth: 400, marginTop: 12 }}>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', marginBottom: 8,
+              fontSize: '0.85rem',
+            }}>
+              <span className={`status-badge status-${project.status}`}>
+                {project.status}
+              </span>
+              <span style={{ color: 'var(--text-muted)' }}>{project.progress}%</span>
+            </div>
+            <div className="progress-bar" style={{ height: 8 }}>
+              <div className="progress-bar-fill" style={{ width: `${project.progress}%` }} />
+            </div>
+          </div>
+
+          <div style={{
+            marginTop: 20, padding: '16px 24px',
+            background: 'var(--bg-card)', borderRadius: 12,
+            border: '1px solid var(--border-color)',
+            fontSize: '0.85rem', color: 'var(--text-secondary)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <Loader size={14} className="animate-spin" /> Processing Steps:
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, paddingLeft: 22 }}>
+              {['Clone repository', 'Process files', 'AI analysis', 'Generate documentation', 'Create diagrams'].map((step, i) => {
+                const stepProgress = [5, 15, 25, 60, 88];
+                const done = project.progress > stepProgress[i];
+                const active = project.progress >= stepProgress[i] && project.progress <= (stepProgress[i + 1] || 100);
