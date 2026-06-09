@@ -208,3 +208,56 @@ export default function ProjectPage({ theme, toggleTheme }) {
                 const stepProgress = [5, 15, 25, 60, 88];
                 const done = project.progress > stepProgress[i];
                 const active = project.progress >= stepProgress[i] && project.progress <= (stepProgress[i + 1] || 100);
+
+                return (
+                  <span key={i} style={{
+                    color: done ? '#4caf50' : active ? '#6c5ce7' : 'var(--text-muted)',
+                    fontWeight: active ? 600 : 400,
+                  }}>
+                    {done ? '✅' : active ? '⏳' : '○'} {step}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Failed state
+  if (project?.status === 'failed') {
+    return (
+      <div style={{ minHeight: '100vh' }}>
+        <Header theme={theme} toggleTheme={toggleTheme} minimal />
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          height: 'calc(100vh - 60px)', flexDirection: 'column', gap: 16, padding: 24,
+        }}>
+          <AlertTriangle size={48} style={{ color: '#f44336' }} />
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 600 }}>Generation Failed</h2>
+          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', maxWidth: 500 }}>
+            {project.error || 'An unexpected error occurred.'}
+          </p>
+          <button className="btn-primary" onClick={handleRegenerate} style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+          }}>
+            <RefreshCw size={16} /> Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header theme={theme} toggleTheme={toggleTheme} minimal />
+
+      {/* Toolbar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '8px 20px', borderBottom: '1px solid var(--border-color)',
+        background: 'var(--bg-secondary)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h2 style={{ fontSize: '1rem', fontWeight: 600 }}>{project?.repo_name}</h2>
