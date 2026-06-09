@@ -261,3 +261,58 @@ export default function ProjectPage({ theme, toggleTheme }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <h2 style={{ fontSize: '1rem', fontWeight: 600 }}>{project?.repo_name}</h2>
+
+          <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+            by {project?.owner}
+          </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button className="btn-secondary" onClick={() => setShowSearch(true)}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontSize: '0.8rem' }}>
+            <Search size={14} /> Search
+            <kbd style={{
+              background: 'var(--bg-primary)', padding: '1px 6px', borderRadius: 4,
+              fontSize: '0.7rem', border: '1px solid var(--border-color)',
+            }}>Ctrl+K</kbd>
+          </button>
+          <button className="btn-secondary" onClick={() => setShowChat(!showChat)}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontSize: '0.8rem' }}>
+            <MessageSquare size={14} /> Chat
+          </button>
+          <button className="btn-secondary" onClick={handleExportMd}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontSize: '0.8rem' }}>
+            <Download size={14} /> .md
+          </button>
+          <button
+            className="btn-secondary"
+            onClick={handleExportPdf}
+            disabled={exportingPdf}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '6px 14px', fontSize: '0.8rem',
+              opacity: exportingPdf ? 0.6 : 1,
+            }}
+          >
+            <FileDown size={14} /> {exportingPdf ? 'Exporting...' : 'PDF'}
+          </button>
+          <button className="btn-secondary" onClick={handleRegenerate}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontSize: '0.8rem' }}>
+            <RefreshCw size={14} /> Regen
+          </button>
+        </div>
+      </div>
+
+      {/* Main Layout */}
+      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+        <Sidebar
+          sections={DOC_SECTIONS}
+          activeSection={activeSection}
+          setActiveSection={(s) => { setActiveSection(s); setActiveView('docs'); }}
+          activeView={activeView}
+          setActiveView={setActiveView}
+          fileTree={docs?.file_tree}
+          activeDiagram={activeDiagram}
+          setActiveDiagram={(d) => { setActiveDiagram(d); setActiveView('diagrams'); }}
+        />
+
+        <main style={{
