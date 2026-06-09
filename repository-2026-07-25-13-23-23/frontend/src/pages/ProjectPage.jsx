@@ -316,3 +316,46 @@ export default function ProjectPage({ theme, toggleTheme }) {
         />
 
         <main style={{
+
+          flex: 1, overflow: 'auto', padding: '32px 48px',
+          minWidth: 0,
+        }}>
+          {activeView === 'docs' && (
+            <DocViewer
+              content={docs?.documentation?.[activeSection] || ''}
+              sectionName={DOC_SECTIONS.find(s => s.key === activeSection)?.label || activeSection}
+            />
+          )}
+          {activeView === 'diagrams' && (
+            <DiagramViewer diagrams={docs?.diagrams || []} activeDiagram={activeDiagram} />
+          )}
+          {activeView === 'api' && (
+            <ApiViewer endpoints={docs?.api_endpoints || []} projectId={projectId} />
+          )}
+          {activeView === 'files' && (
+            <FileExplorer
+              fileTree={docs?.file_tree || {}}
+              fileAnalyses={docs?.file_analyses || []}
+            />
+          )}
+        </main>
+
+        {showChat && (
+          <ChatPanel projectId={projectId} onClose={() => setShowChat(false)} />
+        )}
+      </div>
+
+      {showSearch && (
+        <SearchModal
+          projectId={projectId}
+          onClose={() => setShowSearch(false)}
+          onNavigate={(section) => {
+            setActiveSection(section);
+            setActiveView('docs');
+            setShowSearch(false);
+          }}
+        />
+      )}
+    </div>
+  );
+}
