@@ -58,3 +58,6 @@ export const searchDocs = (projectId, query) =>
 // Health
 export const healthCheck = () =>
   api.get('/health').then(r => r.data);
+
+
+export default api;
