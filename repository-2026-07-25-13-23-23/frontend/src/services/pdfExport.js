@@ -118,3 +118,59 @@ export async function exportToPdf(projectName, documentation, diagrams) {
 
   // Documentation sections
   for (const [key, content] of Object.entries(documentation || {})) {
+
+    const label = SECTION_LABELS[key] || key;
+    sections += `
+      <div class="section">
+        <div class="section-header">${label}</div>
+        <div class="section-content">${md2html(content)}</div>
+      </div>
+    `;
+  }
+
+  // Diagrams
+  let diagramsHtml = '';
+  if (diagrams && diagrams.length > 0) {
+    for (let i = 0; i < diagrams.length; i++) {
+      const d = diagrams[i];
+      const title = d.title || d.type || `Diagram ${i + 1}`;
+      const svg = await renderMermaidSvg(d.mermaid_code, i);
+      diagramsHtml += `
+        <div class="diagram-block">
+          <h3 style="color:#6c5ce7;margin-bottom:12px;font-size:18px">${title}</h3>
+          <div class="diagram-svg">${svg}</div>
+        </div>
+      `;
+    }
+  }
+
+  const dateStr = new Date().toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+
+  const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${projectName} — Documentation</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 15mm;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Cover page */
+    .cover {
+      text-align: center;
+      padding: 120px 40px 80px;
+      page-break-after: always;
+    }
+    .cover .brand {
