@@ -58,3 +58,63 @@ function md2html(md) {
   // Blockquotes
   h = h.replace(/^> (.+)$/gm,
     '<blockquote style="border-left:4px solid #6c5ce7;padding:8px 16px;margin:12px 0;color:#555;background:#f8f7ff;border-radius:0 8px 8px 0">$1</blockquote>'
+
+  );
+
+  // Unordered lists
+  h = h.replace(/^[\-\*] (.+)$/gm, '<li style="margin:4px 0">$1</li>');
+  h = h.replace(/((?:<li[^>]*>.*<\/li>\n?)+)/g, '<ul style="padding-left:24px;margin:10px 0">$1</ul>');
+
+  // Links
+  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:#6c5ce7">$1</a>');
+
+  // Simple tables
+  h = h.replace(/^\|(.+)\|$/gm, (match, content) => {
+    const cells = content.split('|').map(c => c.trim());
+    if (cells.every(c => /^[-:]+$/.test(c))) return '';
+    const cellHtml = cells.map(c =>
+      `<td style="padding:8px 12px;border:1px solid #ddd">${c}</td>`
+    ).join('');
+    return `<tr>${cellHtml}</tr>`;
+  });
+  h = h.replace(/((?:<tr>.*<\/tr>\n?)+)/g,
+    '<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:13px">$1</table>'
+  );
+
+  // Paragraphs
+  h = h.replace(/^(?!<[a-z/])((?!^\s*$).+)$/gm, '<p style="margin:8px 0;line-height:1.7;color:#333">$1</p>');
+
+  return h;
+}
+
+/**
+ * Render mermaid code to SVG string — uses the shared sanitizer
+ */
+async function renderMermaidSvg(code, id) {
+  if (!code) return '';
+
+  // Use the same sanitizer as DiagramViewer
+  const sanitized = sanitizeMermaidCode(code);
+  if (!sanitized) return '';
+
+  try {
+    const uniqueId = `pdf-m-${id}-${Date.now()}`;
+    const { svg } = await mermaid.render(uniqueId, sanitized);
+    return svg;
+  } catch (err) {
+    console.warn(`PDF diagram ${id} render failed:`, err?.message);
+    // Fallback: show sanitized code as text
+    return `<pre style="background:#f5f5f5;color:#6c5ce7;padding:16px;border-radius:8px;font-size:11px;white-space:pre-wrap;border:1px solid #ddd">${sanitized.replace(/</g, '&lt;')}</pre>`;
+  }
+}
+
+/**
+ * Generate and download PDF using a print window approach.
+ * Opens a new window with styled content and triggers print dialog.
+ */
+export async function exportToPdf(projectName, documentation, diagrams) {
+  // ── Build the complete HTML document ──
+  let sections = '';
+
+  // Documentation sections
+  for (const [key, content] of Object.entries(documentation || {})) {
