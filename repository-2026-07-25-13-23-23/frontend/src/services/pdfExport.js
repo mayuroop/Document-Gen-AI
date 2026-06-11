@@ -224,3 +224,64 @@ export async function exportToPdf(projectName, documentation, diagrams) {
     }
 
     /* Sections */
+
+    .section {
+      page-break-before: always;
+    }
+    .section-header {
+      font-size: 22px;
+      font-weight: 700;
+      color: #6c5ce7;
+      border-bottom: 3px solid #6c5ce7;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    .section-content {
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* Diagrams */
+    .diagrams-page {
+      page-break-before: always;
+    }
+    .diagram-block {
+      margin-bottom: 30px;
+      page-break-inside: avoid;
+    }
+    .diagram-svg {
+      text-align: center;
+      padding: 24px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fafafa;
+      overflow: hidden;
+    }
+    .diagram-svg svg {
+      max-width: 100%;
+      height: auto !important;
+    }
+    /* Mermaid diagram overrides for print/PDF */
+    .diagram-svg svg .node rect, 
+    .diagram-svg svg .node circle, 
+    .diagram-svg svg .node polygon {
+      fill: #fdfdfd !important;
+      stroke: #6c5ce7 !important;
+      stroke-width: 1.5px !important;
+    }
+    .diagram-svg svg .edgePath .path {
+      stroke: #a78bfa !important;
+      stroke-width: 2px !important;
+    }
+    .diagram-svg svg .cluster rect {
+      fill: rgba(108, 92, 231, 0.05) !important;
+      stroke: rgba(108, 92, 231, 0.4) !important;
+    }
+    
+    /* Sequence diagram PDF */
+    .diagram-svg svg .actor {
+      fill: #fdfdfd !important;
+      stroke: #6c5ce7 !important;
+      stroke-width: 1.5px !important;
+    }
+    .diagram-svg svg text.actor > tspan {
