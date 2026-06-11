@@ -285,3 +285,56 @@ export async function exportToPdf(projectName, documentation, diagrams) {
       stroke-width: 1.5px !important;
     }
     .diagram-svg svg text.actor > tspan {
+
+      fill: #333 !important;
+    }
+    .diagram-svg svg .messageLine0,
+    .diagram-svg svg .messageLine1 {
+      stroke: #a78bfa !important;
+      stroke-width: 2px !important;
+    }
+    .diagram-svg svg #arrowhead path {
+      fill: #a78bfa !important;
+      stroke: #a78bfa !important;
+    }
+    .diagram-svg svg .messageText {
+      fill: #555 !important;
+    }
+    .diagram-svg svg .note {
+      fill: rgba(108, 92, 231, 0.1) !important;
+      stroke: #6c5ce7 !important;
+    }
+    
+    /* ER Diagram PDF */
+    .diagram-svg svg .er.entityBox {
+      fill: #fdfdfd !important;
+      stroke: #6c5ce7 !important;
+      stroke-width: 1.5px !important;
+    }
+    .diagram-svg svg .er.attributeBoxEven {
+      fill: rgba(253, 253, 253, 0.8) !important;
+      stroke: #ddd !important;
+    }
+    .diagram-svg svg .er.attributeBoxOdd {
+      fill: rgba(240, 240, 245, 0.8) !important;
+      stroke: #ddd !important;
+    }
+    .diagram-svg svg .er.entityLabel,
+    .diagram-svg svg .er.entityLabel tspan {
+      fill: #333 !important;
+    }
+    .diagram-svg svg .er.relationshipLine {
+      stroke: #a78bfa !important;
+      stroke-width: 2px !important;
+    }
+    .diagram-svg svg .er.relationshipLabelBox {
+      fill: #fff !important;
+      stroke: #6c5ce7 !important;
+    }
+    .diagram-svg svg .er.relationshipLabel tspan {
+      fill: #6c5ce7 !important;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
