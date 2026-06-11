@@ -174,3 +174,53 @@ export async function exportToPdf(projectName, documentation, diagrams) {
       page-break-after: always;
     }
     .cover .brand {
+
+      font-size: 13px;
+      color: #6c5ce7;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 40px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 12px;
+    }
+    .cover .subtitle {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    .cover .date {
+      font-size: 12px;
+      color: #999;
+      margin-top: 60px;
+    }
+    .cover hr {
+      border: none;
+      border-top: 3px solid #6c5ce7;
+      width: 80px;
+      margin: 0 auto 40px;
+    }
+
+    /* TOC */
+    .toc {
+      padding: 20px 0;
+      page-break-after: always;
+    }
+    .toc h2 {
+      font-size: 24px;
+      color: #6c5ce7;
+      margin-bottom: 20px;
+    }
+    .toc-item {
+      padding: 8px 16px;
+      border-left: 3px solid #6c5ce7;
+      margin-bottom: 6px;
+      background: #f8f7ff;
+      border-radius: 0 6px 6px 0;
+      font-size: 14px;
+    }
+
+    /* Sections */
