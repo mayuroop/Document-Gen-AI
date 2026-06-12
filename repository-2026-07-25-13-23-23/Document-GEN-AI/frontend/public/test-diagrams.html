@@ -116,3 +116,50 @@
             l = l.replace(/participant\s+(.+)/, (m, name) =>
               `participant ${name.replace(/[^a-zA-Z0-9_ ]/g, '').trim()}`);
           }
+
+          return l;
+        });
+        c = fixed.join('\n');
+      }
+
+      if (c.startsWith('erDiagram')) {
+        c = c.replace(/^(\s*)([A-Z][A-Z0-9_-]+)/gm, (match, indent, name) => {
+
+          if (name === 'erDiagram') return match;
+          return indent + name.replace(/-/g, '_');
+        });
+        const lines = c.split('\n');
+        const fixedLines = [];
+        let inBlock = false;
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.endsWith('{')) {
+            if (inBlock) fixedLines.push('    }');
+            inBlock = true;
+            fixedLines.push(line);
+          } else if (trimmed === '}') {
+            inBlock = false;
+            fixedLines.push(line);
+
+          } else {
+            fixedLines.push(line);
+          }
+        }
+        if (inBlock) fixedLines.push('    }');
+        c = fixedLines.join('\n');
+      }
+
+      c = c.replace(/`+\s*$/g, '').trim();
+      return c;
+    }
+
+    // ═══ TEST CASES — User's exact failing code ═══
+
+    const tests = [
+      {
+        name: "Architecture — with [ - Database] and [Auth Service  - Google, etc.]",
+        code: `graph TB
+    subgraph Client_UI_Layer
+
+        A[Client App] --> B[API Client]
+    end
