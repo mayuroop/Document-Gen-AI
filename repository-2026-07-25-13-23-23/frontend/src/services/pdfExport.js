@@ -398,3 +398,22 @@ export async function exportToPdf(projectName, documentation, diagrams) {
   return new Promise((resolve) => {
     printWindow.onload = () => {
       setTimeout(() => {
+
+        printWindow.print();
+        // Close after a delay to let print dialog finish
+        setTimeout(() => {
+          printWindow.close();
+          resolve(true);
+        }, 1000);
+      }, 500);
+    };
+    // Fallback if onload doesn't fire
+    setTimeout(() => {
+      printWindow.print();
+      setTimeout(() => {
+        printWindow.close();
+        resolve(true);
+      }, 1000);
+    }, 2000);
+  });
+}
