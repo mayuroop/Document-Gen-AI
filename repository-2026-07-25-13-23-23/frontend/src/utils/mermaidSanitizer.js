@@ -110,3 +110,61 @@ export function sanitizeMermaidCode(code) {
   if (c.startsWith('graph') || c.startsWith('flowchart')) {
     c = c.replace(/\[([^\]]*)\]/g, (match, inner) => {
       let fixed = inner
+
+        .replace(/\(/g, ' ').replace(/\)/g, '')
+        .replace(/,\s*/g, ' ').replace(/\.\.\./g, '')
+        .replace(/etc\./gi, 'etc').replace(/"/g, "'")
+        .replace(/;/g, ' ').trim();
+      fixed = fixed.replace(/^[\s\-–—]+/, '').trim();
+      return `[${fixed || 'Node'}]`;
+    });
+    c = c.replace(/(\w)\s*-+\s*>\s*(\w)/g, '$1 --> $2');
+  }
+
+  // 6. Fix sequence diagrams
+  if (c.startsWith('sequenceDiagram')) {
+    const lines = c.split('\n');
+    const fixed = lines.map(line => {
+      let l = line;
+      l = l.replace(/-+\s*>\s*>/g, '->>');
+      l = l.replace(/--\s*>>/g, '-->>');
+      l = l.replace(/-\s*>>/g, '->>');
+      if (l.trim().startsWith('participant')) {
+        l = l.replace(/participant\s+(.+)/, (m, name) =>
+          `participant ${name.replace(/[^a-zA-Z0-9_ ]/g, '').trim()}`
+        );
+      }
+      return l;
+    });
+    c = fixed.join('\n');
+  }
+
+  // 7. Fix ER diagrams
+  if (c.startsWith('erDiagram')) {
+    c = c.replace(/^(\s*)([A-Z][A-Z0-9_-]+)/gm, (match, indent, name) => {
+      if (name === 'erDiagram') return match;
+      return indent + name.replace(/-/g, '_');
+    });
+
+    const lines = c.split('\n');
+    const fixedLines = [];
+    let inBlock = false;
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.endsWith('{')) {
+        if (inBlock) fixedLines.push('    }');
+        inBlock = true;
+        fixedLines.push(line);
+      } else if (trimmed === '}') {
+        if (inBlock) {
+          inBlock = false;
+          fixedLines.push(line);
+        }
+      } else {
+        if (inBlock && trimmed !== '') {
+          // Inside an entity block, attributes shouldn't have colons or special chars
+          let cleanLine = line.replace(/[:"']/g, '').trim();
+          const tokens = cleanLine.split(/\s+/);
+          
+          if (tokens.length >= 2) {
+            const type = tokens[0];
