@@ -58,3 +58,55 @@ function truncateAfterDiagram(code) {
 
   for (let i = 3; i < lines.length; i++) {
     const trimmed = lines[i].trim();
+
+    if (!trimmed) continue;
+    if (isCommentaryLine(trimmed) && trimmed.length > 40) {
+      lastValidLine = Math.min(lastValidLine, i - 1);
+      break;
+    }
+  }
+
+  return lines.slice(0, lastValidLine + 1).join('\n').trim();
+}
+
+/**
+ * Sanitize AI-generated mermaid code to fix common syntax issues.
+ */
+export function sanitizeMermaidCode(code) {
+  if (!code) return '';
+  let c = code.trim();
+
+  // 1. Remove markdown fences and leaked LLM special tokens
+  c = c.replace(/<[｜|]?(begin|end)?[▁_]?(of)?[▁_]?(sentence|text)[｜|]?>/gi, '');
+  c = c.replace(/^```[\w]*\s*\n?/gm, '');
+  c = c.replace(/```\s*$/gm, '');
+  c = c.replace(/```/g, '');
+  c = c.trim();
+
+  // 2. Ensure a valid diagram type declaration exists
+  const validStarts = [
+    'graph ', 'graph\n', 'flowchart ', 'flowchart\n',
+    'sequenceDiagram', 'erDiagram', 'classDiagram',
+    'stateDiagram', 'gantt', 'pie', 'gitgraph',
+  ];
+  const hasValidStart = validStarts.some(s => c.startsWith(s));
+  if (!hasValidStart) {
+    if (c.includes('->>') || c.includes('participant')) {
+      c = 'sequenceDiagram\n' + c;
+    } else if ((c.includes('||') || c.includes('}')) && c.includes('{')) {
+      c = 'erDiagram\n' + c;
+    } else {
+      c = 'graph TD\n' + c;
+    }
+  }
+
+  // 3. Strip trailing LLM commentary
+  c = truncateAfterDiagram(c);
+
+  // 4. Collapse excessive blank lines
+  c = c.replace(/\n{3,}/g, '\n\n');
+
+  // 5. Fix graph / flowchart diagrams
+  if (c.startsWith('graph') || c.startsWith('flowchart')) {
+    c = c.replace(/\[([^\]]*)\]/g, (match, inner) => {
+      let fixed = inner
