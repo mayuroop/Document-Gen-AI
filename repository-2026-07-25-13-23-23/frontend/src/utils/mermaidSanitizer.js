@@ -168,3 +168,35 @@ export function sanitizeMermaidCode(code) {
           
           if (tokens.length >= 2) {
             const type = tokens[0];
+
+            const nameTokens = [];
+            const keyTokens = [];
+            
+            for (let i = 1; i < tokens.length; i++) {
+              const t = tokens[i];
+              if (['PK', 'FK', 'UK'].includes(t.toUpperCase())) {
+                keyTokens.push(t.toUpperCase());
+              } else {
+                nameTokens.push(t);
+              }
+            }
+            
+            const name = nameTokens.join('_');
+            fixedLines.push(`        ${type} ${name} ${keyTokens.join(' ')}`.trim());
+          } else {
+            fixedLines.push('        ' + cleanLine);
+          }
+        } else {
+          fixedLines.push(line);
+        }
+      }
+    }
+    if (inBlock) fixedLines.push('    }');
+    c = fixedLines.join('\n');
+  }
+
+  // 8. Final cleanup
+  c = c.replace(/`+\s*$/g, '').trim();
+
+  return c;
+}
