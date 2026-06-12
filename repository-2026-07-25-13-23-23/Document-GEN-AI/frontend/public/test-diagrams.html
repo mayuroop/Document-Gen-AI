@@ -163,3 +163,59 @@
 
         A[Client App] --> B[API Client]
     end
+
+    subgraph API_Gateway_Layer
+        C[Routes] --> D[Controllers]
+    end
+    subgraph Service_Business_Logic_Layer
+        E[Analytics Controller] 
+        F[Auth Controller]
+        G[Claim Controller]
+        H[Lead Controller]
+        I[Notification Controller]
+        J[Payment Controller]
+        K[Policy Controller]
+        L[UserPolicy Controller]
+
+    end
+    subgraph Data_Storage_Layer
+        M[ - Database] 
+    end
+    subgraph External_Services
+        N[Auth Service  - Google, etc.]
+    end
+    
+    B --> |HTTP Requests| C
+    D --> |Read/Write| E
+    F --> |Sessions| G
+    H --> |CRUD Operations| I
+    J --> |CRUD Operations| K
+    L --> |CRUD Operations| M
+
+    N --> |Authentication| F
+
+This diagram represents the architecture of a web application using Mermaid.js syntax. It shows how data flows between different layers and subsystems, including client/UI layer, API/Gateway layer, service/business logic layer, data/storage layer, and external services. The direction of data flow is indicated by arrows with labels.`
+      },
+      {
+        name: "ER — with trailing LLM note",
+        code: `erDiagram
+    USER ||--o{ ORDER : places
+    ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : included_in
+    USER {
+        string id PK
+        string name
+        string email
+        datetime created_at
+     }
+
+    ORDER {
+        string id PK
+        string user_id FK
+        string status
+        float total
+        datetime created_at
+     }
+    PRODUCT {
+        string id PK
+        string name
