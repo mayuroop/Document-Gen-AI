@@ -219,3 +219,54 @@ This diagram represents the architecture of a web application using Mermaid.js s
     PRODUCT {
         string id PK
         string name
+
+        float price
+        int stock
+     }
+    ORDER_ITEM {
+        string id PK
+        string order_id FK
+        string product_id FK
+        int quantity
+
+        float total_price
+     }
+Note: The above diagram is a basic ER Diagram for the entities mentioned in your project. It does not cover all relationships and fields as per your request, but it gives an idea of how to structure it based on the provided information. You can further refine this diagram according to your needs by adding more entities or modifying existing ones.`
+      },
+    ];
+
+    async function runTests() {
+      const container = document.getElementById('results');
+      let passed = 0;
+      for (let i = 0; i < tests.length; i++) {
+
+        const test = tests[i];
+        const box = document.createElement('div');
+        box.className = 'box';
+        box.innerHTML = `<h2>Test ${i + 1}: ${test.name}</h2>`;
+        
+        const sanitized = sanitizeMermaidCode(test.code);
+        const pre = document.createElement('pre');
+        pre.textContent = `SANITIZED OUTPUT:\n${sanitized}`;
+        box.appendChild(pre);
+
+        const diagramDiv = document.createElement('div');
+        box.appendChild(diagramDiv);
+        const status = document.createElement('p');
+
+        try {
+          const id = `test-${i}-${Date.now()}`;
+          const { svg } = await mermaid.render(id, sanitized);
+          diagramDiv.innerHTML = svg;
+          status.className = 'ok';
+
+          status.textContent = '✅ Rendered successfully';
+          passed++;
+        } catch (err) {
+          status.className = 'fail';
+          status.textContent = `❌ Error: ${err.message?.slice(0, 150) || err}`;
+        }
+        box.appendChild(status);
+        container.appendChild(box);
+      }
+      const summary = document.createElement('h2');
