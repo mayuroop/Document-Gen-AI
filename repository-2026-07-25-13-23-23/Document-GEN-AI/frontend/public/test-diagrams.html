@@ -270,3 +270,13 @@ Note: The above diagram is a basic ER Diagram for the entities mentioned in your
         container.appendChild(box);
       }
       const summary = document.createElement('h2');
+
+      summary.style.marginTop = '1rem';
+      summary.textContent = `Results: ${passed}/${tests.length} passed`;
+      summary.style.color = passed === tests.length ? '#4caf50' : '#ff9800';
+      container.prepend(summary);
+    }
+    runTests();
+  </script>
+</body>
+</html>
