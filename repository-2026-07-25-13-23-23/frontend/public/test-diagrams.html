@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sanitizer Test v3</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <style>
+    body { background: #0a0a1a; color: #e8e8f0; font-family: Inter, sans-serif; padding: 2rem; }
+    .box { background: #1a1a3e; border: 1px solid #2a2a5a; border-radius: 12px; padding: 2rem; margin: 1rem 0; }
+    h2 { color: #6c5ce7; margin-bottom: 12px; }
+    .ok { color: #4caf50; font-weight: bold; }
+    .fail { color: #f44336; font-weight: bold; }
+    pre { background: #0d1117; padding: 12px; border-radius: 8px; font-size: 0.75rem; color: #a78bfa; overflow: auto; margin: 8px 0; max-height: 200px; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Sanitizer v3 — User's Exact Failing Diagrams</h1>
+  <div id="results"></div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
+
+    // ═══ SANITIZER — exact copy from DiagramViewer.jsx ═══
+
+    function isCommentaryLine(line) {
+      const commentaryPatterns = [
+        /^(This|The|Note|Here|Above|Below|I |In |It |As |For |Please|You |We )/i,
+        /^(This diagram|This represents|The above|The diagram)/i,
+        /\b(represents|illustrates|shows how|demonstrates|depicts)\b/i,
+        /^(Remember|Important|Tip|Warning|Info):/i,
+        /^(Based on|According to|As you can see)/i,
+        /^\*\*Note/i,
+        /^[A-Z][a-z]+ [a-z]+ [a-z]+ [a-z]+ [a-z]+/,
+      ];
+      const mermaidPatterns = [
+        /^\s*(graph|flowchart|sequenceDiagram|erDiagram|classDiagram|subgraph|end)\b/,
+        /^\s*\w+\s*[\[\({]/, /^\s*\w+\s*--/, /^\s*\w+\s*-[->]/,
+        /^\s*\w+\s*==/, /^\s*\w+\s*\|\|/,
+        /^\s*(participant|Note|alt|else|loop|opt|rect|par)\b/,
+        /^\s*(string|int|float|boolean|datetime)\s+/,
+        /^\s*\}/, /^\s*\w+\s*\{/,
+        /-->|==>|->>|-->>|-.->/, 
+      ];
+      if (mermaidPatterns.some(p => p.test(line))) return false;
+      if (commentaryPatterns.some(p => p.test(line))) return true;
+      return false;
+    }
