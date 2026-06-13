@@ -45,3 +45,60 @@
       if (commentaryPatterns.some(p => p.test(line))) return true;
       return false;
     }
+
+
+    function truncateAfterDiagram(code) {
+      const lines = code.split('\n');
+      let lastValidLine = lines.length - 1;
+      for (let i = lines.length - 1; i >= 0; i--) {
+        const trimmed = lines[i].trim();
+        if (!trimmed) continue;
+        if (isCommentaryLine(trimmed)) { lastValidLine = i - 1; continue; }
+        break;
+      }
+      for (let i = 3; i < lines.length; i++) {
+        const trimmed = lines[i].trim();
+        if (!trimmed) continue;
+        if (isCommentaryLine(trimmed) && trimmed.length > 40) {
+          lastValidLine = Math.min(lastValidLine, i - 1);
+          break;
+        }
+      }
+      return lines.slice(0, lastValidLine + 1).join('\n').trim();
+    }
+
+    function sanitizeMermaidCode(code) {
+      if (!code) return '';
+      let c = code.trim();
+      c = c.replace(/^```[\w]*\s*\n?/gm, '');
+      c = c.replace(/```\s*$/gm, '');
+      c = c.replace(/```/g, '');
+      c = c.trim();
+
+      const validStarts = ['graph ', 'graph\n', 'flowchart ', 'flowchart\n',
+        'sequenceDiagram', 'erDiagram', 'classDiagram', 'stateDiagram', 'gantt', 'pie', 'gitgraph'];
+      const hasValidStart = validStarts.some(s => c.startsWith(s));
+      if (!hasValidStart) {
+        if (c.includes('->>') || c.includes('participant')) c = 'sequenceDiagram\n' + c;
+        else if ((c.includes('||') || c.includes('}')) && c.includes('{')) c = 'erDiagram\n' + c;
+        else c = 'graph TD\n' + c;
+      }
+
+      c = truncateAfterDiagram(c);
+      c = c.replace(/\n{3,}/g, '\n\n');
+
+      if (c.startsWith('graph') || c.startsWith('flowchart')) {
+        c = c.replace(/\[([^\]]*)\]/g, (match, inner) => {
+          let fixed = inner
+            .replace(/\(/g, ' ').replace(/\)/g, '')
+            .replace(/,\s*/g, ' ').replace(/\.\.\./g, '')
+            .replace(/etc\./gi, 'etc').replace(/"/g, "'")
+            .replace(/;/g, ' ').trim();
+          fixed = fixed.replace(/^[\s\-–—]+/, '').trim();
+          return `[${fixed || 'Node'}]`;
+        });
+        c = c.replace(/(\w)\s*-+\s*>\s*(\w)/g, '$1 --> $2');
+      }
+
+      if (c.startsWith('sequenceDiagram')) {
+        const lines = c.split('\n');
