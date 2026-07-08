@@ -1,0 +1,37 @@
+# User requested exclusions
+Interview_Preparation_Guide.md
+DocGen_AI_Interview_Preparation_Guide.docx
+Project_Report.md
+convert_to_docx.py
+
+# Backend exclusions
+backend/.env
+backend/cloned_repos/
+**/__pycache__/
+*.pyc
+
+# Frontend exclusions
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS/Editor exclusions
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
