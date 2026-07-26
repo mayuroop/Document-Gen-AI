@@ -72,7 +72,7 @@ async def health_check():
     }
 
 
-@app.get("/")
+@app.get("/api")
 async def root():
     """Root redirect info."""
     return {
