@@ -45,6 +45,13 @@ class Settings(BaseSettings):
         """Parse CORS origins from comma-separated string."""
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
+    @property
+    def effective_clone_dir(self) -> str:
+        """Use /tmp directory in serverless environments like Vercel."""
+        if os.environ.get("VERCEL") or os.environ.get("AWS_EXECUTION_ENV"):
+            return "/tmp/cloned_repos"
+        return self.clone_dir
+
     class Config:
         env_file = ".env"
 
