@@ -14,7 +14,7 @@ load_dotenv(dotenv_path=env_path)
 
 class Settings(BaseSettings):
     # MongoDB
-    mongo_uri: str = "mongodb://localhost:27017"
+    mongo_uri: str = "mongodb+srv://admin:admin@app.1y5xkze.mongodb.net/?retryWrites=true&w=majority"
     mongo_db_name: str = "docgen"
 
     # Ollama
@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     # App
     app_host: str = "0.0.0.0"
     app_port: int = 8000
-    cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    cors_origins: str = "http://localhost:5173,http://localhost:3000,*"
 
     # Processing
     max_file_size_kb: int = 500

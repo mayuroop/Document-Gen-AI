@@ -3,6 +3,9 @@ Interview_Preparation_Guide.md
 DocGen_AI_Interview_Preparation_Guide.docx
 Project_Report.md
 convert_to_docx.py
+Document-GEN-AI/
+.vercel
+
 
 # Backend exclusions
 backend/.env
